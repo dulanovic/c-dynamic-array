@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Projects/C/Dynamic-Array/src/dynamic_array.c
+assert.h
+-
+stdlib.h
+-
+stdio.h
+-
+dynamic_array.h
+D:/Projects/C/Dynamic-Array/src/dynamic_array.h
+
+D:/Projects/C/Dynamic-Array/src/dynamic_array.h
+assert.h
+-
+stdlib.h
+-
+stdio.h
+-
+
+D:/Projects/C/Dynamic-Array/src/main.c
+stdlib.h
+-
+stdio.h
+-
+dynamic_array.h
+D:/Projects/C/Dynamic-Array/src/dynamic_array.h
+
