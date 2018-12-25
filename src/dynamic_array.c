@@ -84,17 +84,11 @@ size_t dnar_getLength(DynArray array) {
 }
 
 void *dnar_get(DynArray array, size_t index) {
-    printf("WANTED INDEX ---> %i\n", (int) index);
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(index >= 0);
     assert(index < array->lastIndex);
-    return (void *) (array->array)[index];
-    /* printf("array->array[index] ---> %u\n", (array->array)[index]);
-    return (array->array + index); */
-    // printf("WANTED INDEX ---> %i\n", (int) index);
-    // printf("array->array[index] ---> %u\n", array->array[index]);
-    // return (void *) (array->array)[index];
+    return (void *) (array->array[index]);
 }
 
 void *dnar_set(DynArray array, size_t index, const void *newItem) {
@@ -280,12 +274,8 @@ int main(int argc, char **argv) {
     dnar_add(array, &d3);
     dnar_add(array, &d4);
     dnar_print(array);
-    /* printf("\n  array approach ---> %u\n", array->array[3]);
-    printf("pointer approach ---> %u\n", *(unsigned int *) (array->array + 3)); */
-    ptr = dnar_get(array, 0);
-    printf("ADDRESS_HEAP ---> %u\n\tADDRESS_STACK ---> %u\n\t\tCONTENT ---> %.8f\n", (unsigned int) ptr, *(unsigned int *) ptr, **(double **) ptr);
-    /* ptr = dnar_set(array, 0, &d4);
-    printf("ptr ---> %u\n\t*ptr ---> %u\n\t\t**ptr ---> %.8f\n", (unsigned int) ptr, *(unsigned int *)ptr, **(double **) ptr); */
+    ptr = dnar_set(array, 0, &d4);
+    printf("ptr ---> %u\n\t*ptr ---> %u\n\t\t**ptr ---> %.8f\n", (unsigned int) ptr, *(unsigned int *)ptr, **(double **) ptr);
 
     return(EXIT_SUCCESS);
 
