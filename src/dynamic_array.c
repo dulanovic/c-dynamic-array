@@ -98,7 +98,8 @@ void *dnar_set(DynArray array, size_t index, const void *newItem) {
     assert(index < array->lastIndex);
     assert(newItem != NULL);
     void *oldElement = (void *) (array->array[index]);
-    (array->array[index]) = newItem;
+    array->array[index] = newItem;
+    assert(dnar_isValid(array));
     return oldElement;
 }
 
@@ -115,6 +116,7 @@ int dnar_add(DynArray array, const void *item) {
     }
     array->array[array->lastIndex] = item;
     array->lastIndex++;
+    assert(dnar_isValid(array));
     return 1;
 }
 
@@ -131,12 +133,13 @@ int dnar_addAt(DynArray array, size_t index, const void *item) {
             return 0;
         }
     }
-    int i;
-    for (i = (int) array->lastIndex; i >= (int) index; i--) {
+    size_t i;
+    for (i = array->lastIndex; i > index; i--) {
         array->array[i] = array->array[i - 1];
     }
     array->array[index] = item;
     array->lastIndex++;
+    assert(dnar_isValid(array));
     return 1;
 }
 
@@ -146,11 +149,12 @@ void *dnar_removeAt(DynArray array, size_t index) {
     assert(index >= 0);
     assert(index < array->lastIndex);
     void *removed = (void *) array->array[index];
-    int i;
-    for (i = (int) index + 1; i < (int) (array->lastIndex); i++) {
+    size_t i;
+    for (i = index + 1; i < (array->lastIndex); i++) {
         array->array[i - 1] = array->array[i];
     }
     array->lastIndex--;
+    assert(dnar_isValid(array));
     return removed;
 }
 
@@ -158,14 +162,8 @@ void dnar_toArray(DynArray array, void **arrayCopy) {
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(arrayCopy != NULL);
-    arrayCopy = (void **) calloc(array->lastIndex, sizeof(void *));
-    if (arrayCopy == NULL) {
-        fprintf(stderr, "Memory for the additional array could not be allocated!");
-        return;
-    }
-    int i;
-    for (i = 0; i < array->lastIndex; i++) {
-        arrayCopy[i] = (void *) array->array[i];
+    for (size_t i = 0; i < array->lastIndex; i++) {
+        arrayCopy[i] = (void *) (array->array[i]);
     }
 }
 
@@ -173,8 +171,8 @@ void dnar_map(DynArray array, void (*func)(void *item, void *extra), const void 
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(func != NULL);
-    for (int i = 0; i < array->lastIndex; i++) {
-        (*func)(array->array + i, (void*) extra);
+    for (size_t i = 0; i < array->lastIndex; i++) {
+        (*func)((void *) (array->array[i]), (void *) extra);
     }
 }
 
@@ -192,11 +190,12 @@ int dnar_search(DynArray array, void *searchCriteria, size_t *foundIndex, int (*
     assert(searchCriteria != NULL);
     assert(foundIndex != NULL);
     assert(compareFunc != NULL);
-    int i, same;
-    for (i = 0; i < (int) array->lastIndex; i++) {
+    size_t i;
+    int same;
+    for (i = 0; i < array->lastIndex; i++) {
         same = (*compareFunc)((array->array + i), searchCriteria);
         if (!same) {
-            *foundIndex = (size_t) i;
+            *foundIndex = i;
             return 1;
         }
     }
@@ -237,16 +236,16 @@ int dnar_bsearch(DynArray array, void *searchCriteria, size_t *foundIndex, int (
 void dnar_print(DynArray array) {
     assert(array != NULL);
     assert(dnar_isValid(array));
-    int i;
-    printf("\n\n--------- DYNAMIC ARRAY ---------\nArray size ---> %i\nNo. of items ---> %i\n\n", (int) array->length, (int) array->lastIndex);
-    for (i = 0; i < (int) array->lastIndex; i++) {
-        printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
-        printf("\tStack address ---> %u\n", *(unsigned int *)(array->array + i));
-        printf("\t\tValue ---> %.8f\n", **(double **) (array->array + i));
+    size_t i;
+    printf("\n\n--------- DYNAMIC ARRAY ---------\nArray size ---> %zi\nNo. of items ---> %zi\n\n", array->length, array->lastIndex);
+    for (i = 0; i < array->lastIndex; i++) {
+        printf("Item %zi\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
+        printf("\tStack address ---> %u\n", (unsigned int)(array->array[i]));
+        printf("\t\tValue ---> %.8f\n", *(double *) (array->array[i]));
     }
-    for (; i < (int) array->length; i++) {
-        printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
-        printf("\tStack address ---> %u\n", 0);
+    for (; i < array->length; i++) {
+        printf("Item %zi\nHeap address ---> %u\n", i, (unsigned int) (array->array[i]));
+        printf("\tStack address ---> %i\n", 0);
         printf("\t\tValue ---> %.8f (NO VALUE ASSIGNED!)\n", 0.0);
     }
     printf("\n\n");
@@ -272,14 +271,8 @@ int main(int argc, char **argv) {
     dnar_add(array, &d1);
     dnar_add(array, &d2);
     dnar_add(array, &d3);
-    dnar_add(array, &d4);
+    dnar_addAt(array, 0, &d4);
     dnar_print(array);
-    void **arrayCopy;
-    dnar_toArray(array, arrayCopy);
-    dnar_print(array);
-    printf("LEVEL_0 ---> %u\n", (unsigned int) arrayCopy);
-    printf("\tLEVEL_1 ---> %.8f\n", *(double *) arrayCopy);
-    // printf("\t\tLEVEL_2 ---> %.8f\n", **(double **) arrayCopy);
     // printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
 
     return(EXIT_SUCCESS);
