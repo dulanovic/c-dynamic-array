@@ -133,9 +133,9 @@ int dnar_addAt(DynArray array, size_t index, const void *item) {
     }
     int i;
     for (i = (int) array->lastIndex; i >= (int) index; i--) {
-        *(array->array + i) = *(array->array + i - 1);
+        array->array[i] = array->array[i - 1];
     }
-    *(array->array + index) = item;
+    array->array[index] = item;
     array->lastIndex++;
     return 1;
 }
@@ -145,10 +145,10 @@ void *dnar_removeAt(DynArray array, size_t index) {
     assert(dnar_isValid(array));
     assert(index >= 0);
     assert(index < array->lastIndex);
-    void *removed = array->array + index;
+    void *removed = (void *) array->array[index];
     int i;
-    for (i = (int) index + 1; i < (int) array->lastIndex - 1; i++) {
-        *(array->array + i - 1) = *(array->array + i);
+    for (i = (int) index + 1; i < (int) (array->lastIndex); i++) {
+        array->array[i - 1] = array->array[i];
     }
     array->lastIndex--;
     return removed;
@@ -158,14 +158,14 @@ void dnar_toArray(DynArray array, void **arrayCopy) {
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(arrayCopy != NULL);
-    arrayCopy = (void**) calloc(array->lastIndex, sizeof(void *));
+    arrayCopy = (void **) calloc(array->lastIndex, sizeof(void *));
     if (arrayCopy == NULL) {
         fprintf(stderr, "Memory for the additional array could not be allocated!");
         return;
     }
     int i;
     for (i = 0; i < array->lastIndex; i++) {
-        *(arrayCopy + i) = (void *) *(array->array + i);
+        arrayCopy[i] = (void *) array->array[i];
     }
 }
 
@@ -256,6 +256,8 @@ int main(int argc, char **argv) {
 
     size_t length = 2;
     int i;
+    int errorCheck;
+    void *ptr;
     double d1 = 0.05;
     double d2 = 2.378;
     double d3 = 8.19;
@@ -265,7 +267,6 @@ int main(int argc, char **argv) {
     double d7 = 3.39;
     double d8 = 1.97;
     double d9 = 5.526;
-    void *ptr;
     DynArray array = dnar_new(length);
     dnar_print(array);
     dnar_add(array, &d1);
@@ -273,9 +274,13 @@ int main(int argc, char **argv) {
     dnar_add(array, &d3);
     dnar_add(array, &d4);
     dnar_print(array);
-    ptr = dnar_set(array, 3, &d5);
+    void **arrayCopy;
+    dnar_toArray(array, arrayCopy);
     dnar_print(array);
-    printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
+    printf("LEVEL_0 ---> %u\n", (unsigned int) arrayCopy);
+    printf("\tLEVEL_1 ---> %.8f\n", *(double *) arrayCopy);
+    // printf("\t\tLEVEL_2 ---> %.8f\n", **(double **) arrayCopy);
+    // printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
 
     return(EXIT_SUCCESS);
 
