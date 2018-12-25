@@ -97,9 +97,8 @@ void *dnar_set(DynArray array, size_t index, const void *newItem) {
     assert(index >= 0);
     assert(index < array->lastIndex);
     assert(newItem != NULL);
-    void *oldElement = (void *) (array->array + index);
-    printf("\noldElement ---> %u\n", oldElement);
-    *(array->array + index) = newItem;
+    void *oldElement = (void *) (array->array[index]);
+    (array->array[index]) = newItem;
     return oldElement;
 }
 
@@ -114,7 +113,7 @@ int dnar_add(DynArray array, const void *item) {
             return 0;
         }
     }
-    *(array->array + array->lastIndex) = item;
+    array->array[array->lastIndex] = item;
     array->lastIndex++;
     return 1;
 }
@@ -274,8 +273,9 @@ int main(int argc, char **argv) {
     dnar_add(array, &d3);
     dnar_add(array, &d4);
     dnar_print(array);
-    ptr = dnar_set(array, 0, &d4);
-    printf("ptr ---> %u\n\t*ptr ---> %u\n\t\t**ptr ---> %.8f\n", (unsigned int) ptr, *(unsigned int *)ptr, **(double **) ptr);
+    ptr = dnar_set(array, 3, &d5);
+    dnar_print(array);
+    printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
 
     return(EXIT_SUCCESS);
 
