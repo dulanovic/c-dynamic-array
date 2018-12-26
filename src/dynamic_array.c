@@ -273,6 +273,8 @@ int main(int argc, char **argv) {
     dnar_add(array, &d3);
     dnar_addAt(array, 0, &d4);
     dnar_print(array);
+    void **arrayCopy = (void **) calloc(array->lastIndex, sizeof(void *));
+    dnar_toArray(array, arrayCopy);
     // printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
 
     return(EXIT_SUCCESS);
