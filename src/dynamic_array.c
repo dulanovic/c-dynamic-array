@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "dynamic_array.h"
+#include "quicksort_p.c"
 
 static const size_t MIN_ARRAY_LENGTH = 2;
 
@@ -180,7 +181,7 @@ void dnar_sort(DynArray array, int (*compareFunc)(const void *item1, const void 
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(compareFunc != NULL);
-    qsort(array, array->lastIndex, sizeof(double), compareFunc);
+    quicksort(&array->array[0], &array->array[array->lastIndex], compareFunc);
     dnar_print(array);
 }
 
@@ -237,14 +238,14 @@ void dnar_print(DynArray array) {
     assert(array != NULL);
     assert(dnar_isValid(array));
     size_t i;
-    printf("\n\n--------- DYNAMIC ARRAY ---------\nArray size ---> %zi\nNo. of items ---> %zi\n\n", array->length, array->lastIndex);
+    printf("\n\n--------- DYNAMIC ARRAY ---------\nArray size ---> %i\nNo. of items ---> %i\n\n", array->length, array->lastIndex);
     for (i = 0; i < array->lastIndex; i++) {
-        printf("Item %zi\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
+        printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
         printf("\tStack address ---> %u\n", (unsigned int)(array->array[i]));
         printf("\t\tValue ---> %.8f\n", *(double *) (array->array[i]));
     }
     for (; i < array->length; i++) {
-        printf("Item %zi\nHeap address ---> %u\n", i, (unsigned int) (array->array[i]));
+        printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array[i]));
         printf("\tStack address ---> %i\n", 0);
         printf("\t\tValue ---> %.8f (NO VALUE ASSIGNED!)\n", 0.0);
     }
@@ -273,8 +274,7 @@ int main(int argc, char **argv) {
     dnar_add(array, &d3);
     dnar_addAt(array, 0, &d4);
     dnar_print(array);
-    void **arrayCopy = (void **) calloc(array->lastIndex, sizeof(void *));
-    dnar_toArray(array, arrayCopy);
+    dnar_sort(array, cmpDouble);
     // printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
 
     return(EXIT_SUCCESS);
