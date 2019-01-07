@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Dynamic_Array.dir/src/main.c.obj"
   "CMakeFiles/Dynamic_Array.dir/src/dynamic_array.c.obj"
+  "CMakeFiles/Dynamic_Array.dir/src/test_struct.c.obj"
   "Dynamic_Array.pdb"
   "Dynamic_Array.exe"
   "Dynamic_Array.exe.manifest"

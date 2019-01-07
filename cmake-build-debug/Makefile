@@ -176,6 +176,33 @@ src/main.c.s:
 	$(MAKE) -f CMakeFiles\Dynamic_Array.dir\build.make CMakeFiles/Dynamic_Array.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/test_struct.obj: src/test_struct.c.obj
+
+.PHONY : src/test_struct.obj
+
+# target to build an object file
+src/test_struct.c.obj:
+	$(MAKE) -f CMakeFiles\Dynamic_Array.dir\build.make CMakeFiles/Dynamic_Array.dir/src/test_struct.c.obj
+.PHONY : src/test_struct.c.obj
+
+src/test_struct.i: src/test_struct.c.i
+
+.PHONY : src/test_struct.i
+
+# target to preprocess a source file
+src/test_struct.c.i:
+	$(MAKE) -f CMakeFiles\Dynamic_Array.dir\build.make CMakeFiles/Dynamic_Array.dir/src/test_struct.c.i
+.PHONY : src/test_struct.c.i
+
+src/test_struct.s: src/test_struct.c.s
+
+.PHONY : src/test_struct.s
+
+# target to generate assembly for a file
+src/test_struct.c.s:
+	$(MAKE) -f CMakeFiles\Dynamic_Array.dir\build.make CMakeFiles/Dynamic_Array.dir/src/test_struct.c.s
+.PHONY : src/test_struct.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -191,6 +218,9 @@ help:
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
+	@echo ... src/test_struct.obj
+	@echo ... src/test_struct.i
+	@echo ... src/test_struct.s
 .PHONY : help
 
 

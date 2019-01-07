@@ -5,7 +5,10 @@ CMakeFiles/Dynamic_Array.dir/src/dynamic_array.c.obj
  D:/Projects/C/Dynamic-Array/src/dynamic_array.c
  D:/Projects/C/Dynamic-Array/src/dynamic_array.h
  D:/Projects/C/Dynamic-Array/src/quicksort_p.c
+ D:/Projects/C/Dynamic-Array/src/test_struct.c
 CMakeFiles/Dynamic_Array.dir/src/main.c.obj
  D:/Projects/C/Dynamic-Array/src/dynamic_array.h
  D:/Projects/C/Dynamic-Array/src/main.c
- D:/Projects/C/Dynamic-Array/src/quicksort_p.c
+ D:/Projects/C/Dynamic-Array/src/test_struct.c
+CMakeFiles/Dynamic_Array.dir/src/test_struct.c.obj
+ D:/Projects/C/Dynamic-Array/src/test_struct.c

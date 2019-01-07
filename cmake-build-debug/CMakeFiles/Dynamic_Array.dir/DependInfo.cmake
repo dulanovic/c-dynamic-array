@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "D:/Projects/C/Dynamic-Array/src/dynamic_array.c" "D:/Projects/C/Dynamic-Array/cmake-build-debug/CMakeFiles/Dynamic_Array.dir/src/dynamic_array.c.obj"
   "D:/Projects/C/Dynamic-Array/src/main.c" "D:/Projects/C/Dynamic-Array/cmake-build-debug/CMakeFiles/Dynamic_Array.dir/src/main.c.obj"
+  "D:/Projects/C/Dynamic-Array/src/test_struct.c" "D:/Projects/C/Dynamic-Array/cmake-build-debug/CMakeFiles/Dynamic_Array.dir/src/test_struct.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

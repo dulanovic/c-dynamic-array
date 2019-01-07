@@ -85,6 +85,9 @@
 		<Unit filename="D:/Projects/C/Dynamic-Array/src/main.c">
 			<Option target="Dynamic_Array"/>
 		</Unit>
+		<Unit filename="D:/Projects/C/Dynamic-Array/src/test_struct.c">
+			<Option target="Dynamic_Array"/>
+		</Unit>
 		<Unit filename="D:/Projects/C/Dynamic-Array/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

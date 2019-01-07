@@ -15,11 +15,7 @@ quicksort_p.c
 D:/Projects/C/Dynamic-Array/src/quicksort_p.c
 
 D:/Projects/C/Dynamic-Array/src/dynamic_array.h
-assert.h
--
-stdlib.h
--
-stdio.h
+stddef.h
 -
 
 D:/Projects/C/Dynamic-Array/src/main.c
@@ -27,10 +23,12 @@ stdlib.h
 -
 stdio.h
 -
+string.h
+-
 dynamic_array.h
 D:/Projects/C/Dynamic-Array/src/dynamic_array.h
-quicksort_p.c
-D:/Projects/C/Dynamic-Array/src/quicksort_p.c
+test_struct.c
+D:/Projects/C/Dynamic-Array/src/test_struct.c
 
 D:/Projects/C/Dynamic-Array/src/quicksort_p.c
 stdio.h
@@ -39,4 +37,8 @@ stdlib.h
 -
 mem.h
 -
+test_struct.c
+D:/Projects/C/Dynamic-Array/src/test_struct.c
+
+D:/Projects/C/Dynamic-Array/src/test_struct.c
 
