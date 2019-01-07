@@ -1,7 +1,5 @@
 
 #include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "dynamic_array.h"
 #include "quicksort_p.c"
 
@@ -39,15 +37,14 @@ static int dnar_increase(DynArray array) {
     size_t newLength;
     const void **newArray;
     newLength = GROWTH_FACTOR * array->length;
-    dnar_print(array);
+    // dnar_print(array);
     newArray = (const void **) realloc(array->array, newLength * sizeof(void *));
     if (newArray == NULL) {
-        printf("\nnewArray == NULL\n");
         return 0;
     }
     array->array = newArray;
     array->length = newLength;
-    printf("\n\n--- SUCCESSFULL MEMORY REALLOCATION(INCREASE)!!! ---\n\n");
+    // printf("\n\n--- SUCCESSFULL MEMORY REALLOCATION(INCREASE)!!! ---\n\n");
     return 1;
 }
 
@@ -182,20 +179,23 @@ void dnar_sort(DynArray array, int (*compareFunc)(const void *item1, const void 
     assert(dnar_isValid(array));
     assert(compareFunc != NULL);
     quicksort(&array->array[0], &array->array[array->lastIndex], compareFunc);
-    dnar_print(array);
+    verifySort(&array->array[0], &array->array[array->lastIndex], compareFunc);
+    // dnar_print(array);
 }
 
-int dnar_search(DynArray array, void *searchCriteria, size_t *foundIndex, int (*compareFunc)(const void *item1, const void *item2)) {
+int dnar_search(DynArray array, void *searchCriteria, size_t *foundIndex, int (*cmpFunc)(const void *item1, const void *item2)) {
     assert(array != NULL);
     assert(dnar_isValid(array));
     assert(searchCriteria != NULL);
     assert(foundIndex != NULL);
-    assert(compareFunc != NULL);
+    assert(cmpFunc != NULL);
     size_t i;
-    int same;
+    int found;
     for (i = 0; i < array->lastIndex; i++) {
-        same = (*compareFunc)((array->array + i), searchCriteria);
-        if (!same) {
+        found = (*cmpFunc)(array->array[i], searchCriteria);
+        // printf("cmpFund(%s, %s) ---> %i\n", (char *) array->array[i], (char *) searchCriteria, (*cmpFunc)(array->array[i], searchCriteria));
+        if (!found) {
+            // printf("\tFOUND!!!\n");
             *foundIndex = i;
             return 1;
         }
@@ -210,15 +210,20 @@ int dnar_bsearch(DynArray array, void *searchCriteria, size_t *foundIndex, int (
     assert(foundIndex != NULL);
     assert(compareFunc != NULL);
     dnar_sort(array, compareFunc);
+    // printf("\n<<<--------------------------- BINARY SEARCH INITIATED --------------------------->>>\n\n\n");
     int lo = 0;
     int hi = (int) array->lastIndex;
     int mid = (lo + hi) / 2;
     int cmp;
-    while (lo >= hi) {
-        cmp = (*compareFunc)(*(array->array + mid), searchCriteria);
+    // printf("INITIAL ARGUMENTS:\n lo ---> %i\n hi ---> %i\n\tmid ---> %i\nCRITERIA ---> %.8f\n\n", lo, hi, mid, *(double *) searchCriteria);
+    while (lo <= hi) {
+        // printf("<--------- LOOP_BEGIN --------->\n\n lo ---> %i\n hi ---> %i\n\tmid ---> %i\n", lo, hi, mid);
+        cmp = (*compareFunc)(array->array[mid], searchCriteria);
+        // printf("\ncmp ---> %i\n\n", cmp);
         switch (cmp) {
             case 0: {
                 *foundIndex = (size_t) mid;
+                // printf("INDEX FOUND ---> %i\n", mid);
                 return 1;
             }
             case -1: {
@@ -230,6 +235,8 @@ int dnar_bsearch(DynArray array, void *searchCriteria, size_t *foundIndex, int (
             }
         }
         mid = (lo + hi) / 2;
+        // printf(" lo ---> %i\n hi ---> %i\n\tmid ---> %i\n\n", lo, hi, mid);
+        // printf("<--------- LOOP_END --------->\n\n");
     }
     return 0;
 }
@@ -242,41 +249,12 @@ void dnar_print(DynArray array) {
     for (i = 0; i < array->lastIndex; i++) {
         printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
         printf("\tStack address ---> %u\n", (unsigned int)(array->array[i]));
-        printf("\t\tValue ---> %.8f\n", *(double *) (array->array[i]));
+        printf("\t\tValue ---> %s\n", (char *) (array->array[i]));
     }
     for (; i < array->length; i++) {
         printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array[i]));
         printf("\tStack address ---> %i\n", 0);
-        printf("\t\tValue ---> %.8f (NO VALUE ASSIGNED!)\n", 0.0);
+        printf("\t\tValue ---> %s (NO VALUE ASSIGNED!)\n", "NULL");
     }
     printf("\n\n");
-}
-
-int main(int argc, char **argv) {
-
-    size_t length = 2;
-    int i;
-    int errorCheck;
-    void *ptr;
-    double d1 = 0.05;
-    double d2 = 2.378;
-    double d3 = 8.19;
-    double d4 = 0.3656;
-    double d5 = 4.11;
-    double d6 = 2.008;
-    double d7 = 3.39;
-    double d8 = 1.97;
-    double d9 = 5.526;
-    DynArray array = dnar_new(length);
-    dnar_print(array);
-    dnar_add(array, &d1);
-    dnar_add(array, &d2);
-    dnar_add(array, &d3);
-    dnar_addAt(array, 0, &d4);
-    dnar_print(array);
-    dnar_sort(array, cmpDouble);
-    // printf("ptr ---> %u\n\t*ptr ---> %.8f\n", (unsigned int) ptr, *(double *)ptr);
-
-    return(EXIT_SUCCESS);
-
 }
