@@ -15,15 +15,12 @@ struct DynamicArray {
 
 static int dnar_isValid(DynArray array) {
     if (array->lastIndex > array->length) {
-        printf("array->lastIndex > array->length");
         return 0;
     }
     if (array->length < MIN_ARRAY_LENGTH) {
-        printf("array->length < MIN_ARRAY_LENGTH");
         return 0;
     }
     if (array->array == NULL) {
-        printf("array->array == NULL");
         return 0;
     }
     return 1;
@@ -193,9 +190,7 @@ int dnar_search(DynArray array, void *searchCriteria, size_t *foundIndex, int (*
     int found;
     for (i = 0; i < array->lastIndex; i++) {
         found = (*cmpFunc)(array->array[i], searchCriteria);
-        // printf("cmpFund(%s, %s) ---> %i\n", (char *) array->array[i], (char *) searchCriteria, (*cmpFunc)(array->array[i], searchCriteria));
         if (!found) {
-            // printf("\tFOUND!!!\n");
             *foundIndex = i;
             return 1;
         }
@@ -210,20 +205,15 @@ int dnar_bsearch(DynArray array, void *searchCriteria, size_t *foundIndex, int (
     assert(foundIndex != NULL);
     assert(compareFunc != NULL);
     dnar_sort(array, compareFunc);
-    // printf("\n<<<--------------------------- BINARY SEARCH INITIATED --------------------------->>>\n\n\n");
     int lo = 0;
     int hi = (int) array->lastIndex;
     int mid = (lo + hi) / 2;
     int cmp;
-    // printf("INITIAL ARGUMENTS:\n lo ---> %i\n hi ---> %i\n\tmid ---> %i\nCRITERIA ---> %.8f\n\n", lo, hi, mid, *(double *) searchCriteria);
     while (lo <= hi) {
-        // printf("<--------- LOOP_BEGIN --------->\n\n lo ---> %i\n hi ---> %i\n\tmid ---> %i\n", lo, hi, mid);
         cmp = (*compareFunc)(array->array[mid], searchCriteria);
-        // printf("\ncmp ---> %i\n\n", cmp);
         switch (cmp) {
             case 0: {
                 *foundIndex = (size_t) mid;
-                // printf("INDEX FOUND ---> %i\n", mid);
                 return 1;
             }
             case -1: {
@@ -235,8 +225,6 @@ int dnar_bsearch(DynArray array, void *searchCriteria, size_t *foundIndex, int (
             }
         }
         mid = (lo + hi) / 2;
-        // printf(" lo ---> %i\n hi ---> %i\n\tmid ---> %i\n\n", lo, hi, mid);
-        // printf("<--------- LOOP_END --------->\n\n");
     }
     return 0;
 }
