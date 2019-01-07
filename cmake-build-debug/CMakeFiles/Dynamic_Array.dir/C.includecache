@@ -9,10 +9,6 @@
 D:/Projects/C/Dynamic-Array/src/dynamic_array.c
 assert.h
 -
-stdlib.h
--
-stdio.h
--
 dynamic_array.h
 D:/Projects/C/Dynamic-Array/src/dynamic_array.h
 quicksort_p.c
@@ -33,6 +29,8 @@ stdio.h
 -
 dynamic_array.h
 D:/Projects/C/Dynamic-Array/src/dynamic_array.h
+quicksort_p.c
+D:/Projects/C/Dynamic-Array/src/quicksort_p.c
 
 D:/Projects/C/Dynamic-Array/src/quicksort_p.c
 stdio.h

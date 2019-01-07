@@ -7,4 +7,5 @@ CMakeFiles/Dynamic_Array.dir/src/dynamic_array.c.obj: ../src/quicksort_p.c
 
 CMakeFiles/Dynamic_Array.dir/src/main.c.obj: ../src/dynamic_array.h
 CMakeFiles/Dynamic_Array.dir/src/main.c.obj: ../src/main.c
+CMakeFiles/Dynamic_Array.dir/src/main.c.obj: ../src/quicksort_p.c
 
