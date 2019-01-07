@@ -2,18 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mem.h>
-
-/* static void exchange(void **item1, void **item2) {
-    double temp = **(double **) item1;
-    **(double **) item1 = **(double **) item2;
-    **(double **) item2 = temp;
-} */
-
-static void exchange(void **item1, void **item2) {
-    char *temp = *(char **) item1;
-    *(char **) item1 = *(char **) item2;
-    *(char **) item2 = temp;
-}
+#include "test_struct.c"
 
 static void printState(const void **ptrLo, const void **ptrHi, const void **ptrPivot) {
     void **ptrTemp;
@@ -29,18 +18,22 @@ static void printState(const void **ptrLo, const void **ptrHi, const void **ptrP
     printf("--------- ARRAY ---------\n\n\n");
 }
 
-static int cmpDouble(const void *item1, const void *item2) {
-    if (*(double *) item1 > *(double *) item2) {
-        return 1;
-    }
-    if (*(double *) item1 < *(double *) item2) {
-        return -1;
-    }
-    return 0;
-}
+/* static void exchange(void **item1, void **item2) {
+    double temp = **(double **) item1;
+    **(double **) item1 = **(double **) item2;
+    **(double **) item2 = temp;
+} */
 
-static int cmpString(const void *item1, const void *item2) {
-    return strcmp((char *) item1, (char *) item2);
+/* static void exchange(void **item1, void **item2) {
+    char *temp = *(char **) item1;
+    *(char **) item1 = *(char **) item2;
+    *(char **) item2 = temp;
+} */
+
+static void exchange(void **item1, void **item2) {
+    struct TestStruct temp = **(struct TestStruct **) item1;
+    **(struct TestStruct **) item1 = **(struct TestStruct **) item2;
+    **(struct TestStruct **) item2 = temp;
 }
 
 static void verifySort(const void **ptrLo, const void **ptrHi, int (*cmpFunc)(const void *, const void *)) {

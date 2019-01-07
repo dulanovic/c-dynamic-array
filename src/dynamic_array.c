@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "dynamic_array.h"
 #include "quicksort_p.c"
+// #include "test_struct.c"
 
 static const size_t MIN_ARRAY_LENGTH = 2;
 
@@ -233,11 +234,13 @@ void dnar_print(DynArray array) {
     assert(array != NULL);
     assert(dnar_isValid(array));
     size_t i;
+    struct TestStruct *das;
     printf("\n\n--------- DYNAMIC ARRAY ---------\nArray size ---> %i\nNo. of items ---> %i\n\n", array->length, array->lastIndex);
     for (i = 0; i < array->lastIndex; i++) {
         printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array + i));
         printf("\tStack address ---> %u\n", (unsigned int)(array->array[i]));
-        printf("\t\tValue ---> %s\n", (char *) (array->array[i]));
+        das = (struct TestStruct *) array->array[i];
+        printf("\t\tDoubleVal ---> %.8f\n\t\tStringVal ---> %s\n", das->doubleAtt, das->stringAtt);
     }
     for (; i < array->length; i++) {
         printf("Item %i\nHeap address ---> %u\n", i, (unsigned int) (array->array[i]));

@@ -1,8 +1,33 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "dynamic_array.h"
-#include "quicksort_p.c"
+#include "test_struct.c"
+
+static int cmpDouble(const void *item1, const void *item2) {
+    if (*(double *) item1 > *(double *) item2) {
+        return 1;
+    }
+    if (*(double *) item1 < *(double *) item2) {
+        return -1;
+    }
+    return 0;
+}
+
+static int cmpString(const void *item1, const void *item2) {
+    return strcmp((char *) item1, (char *) item2);
+}
+
+static int cmpTestStruct(const void *item1, const void *item2) {
+    struct TestStruct ts1 = *(struct TestStruct *) item1;
+    struct TestStruct ts2 = *(struct TestStruct *) item2;
+    if (ts1.stringAtt[0] == ts2.stringAtt[0]) {
+        return cmpDouble(&(ts1.doubleAtt), &(ts2.doubleAtt));
+    } else {
+        return((ts1.stringAtt[0] < ts2.stringAtt[0]) ? -1 : 1);
+    }
+}
 
 static void printString(void *pvItem, void *pvFormat) {
     printf((char *) pvFormat, (char *) pvItem);
@@ -11,6 +36,62 @@ static void printString(void *pvItem, void *pvFormat) {
 int main(int argc, char **argv) {
 
     size_t length = 2;
+    int i, num, errorCheck;
+    size_t j;
+    void *ptr;
+    void *searchCriteria;
+    size_t *foundIndex = &length;
+
+    FILE *fileD = fopen("../array_values_double.txt", "r");
+    FILE *fileS = fopen("../array_values_string.txt", "r");
+    size_t arrayLengthD, arrayLengthS, maxWordLength;
+    fscanf(fileS, "%i, %i\n", &arrayLengthS, &maxWordLength);
+    fscanf(fileD, " %i\n", &arrayLengthD);
+    if (arrayLengthD != arrayLengthS) {
+        fprintf(stderr, "Input error: Array lengths are not equal!\n");
+        exit(EXIT_FAILURE);
+    }
+    DynArray array = dnar_new(arrayLengthS);
+    if (array == NULL) {
+        fprintf(stderr, "Memory issues [array]...\n");
+        exit(EXIT_FAILURE);
+    }
+    while (1) {
+        struct TestStruct *das = (struct TestStruct *) malloc(sizeof(struct TestStruct));
+        char *stringTemp = (char *) malloc((maxWordLength + 1) * sizeof(char));
+        num = fscanf(fileD, " %lf\n", &(das->doubleAtt));
+        stringTemp = fgets(stringTemp, (int) (maxWordLength + 1), fileS);
+        if (num == 0) {
+            break;
+        }
+        if (stringTemp == NULL) {
+            break;
+        }
+        if (stringTemp[strlen(stringTemp) - 1] == 10) {
+            stringTemp[strlen(stringTemp) - 1] = 0;
+        } else {
+            fscanf(fileS, "\n");
+        }
+        das->stringAtt = stringTemp;
+        dnar_add(array, das);
+    }
+    fclose(fileD);
+    fclose(fileS);
+    // dnar_sort(array, cmpTestStruct);
+
+    struct TestStruct criteria = {0.73446509, "rcnscnrhrl"};
+    errorCheck = dnar_search(array, &criteria, foundIndex, cmpTestStruct);
+    if (errorCheck) {
+        printf("\n\nElement found at index %i\n", (int) *foundIndex);
+        ptr = dnar_get(array, *foundIndex);
+        struct TestStruct res = *(struct TestStruct *) ptr;
+        printf("ELEMENT ---> %u\n\tDOUBLEVAL ---> %.8f\n\tSTRINGVAL ---> %s\n", (unsigned int) ptr, res.doubleAtt, res.stringAtt);
+    } else {
+        printf("\n\nELEMENT NOT FOUND BY PROVIDED CRITERIA!!!\n");
+    }
+    dnar_free(array);
+
+    /* size_t length = 2;
     int i, num, errorCheck;
     size_t j;
     void *ptr;
@@ -44,7 +125,6 @@ int main(int argc, char **argv) {
         dnar_add(array, ptrVal);
     }
     fclose(file);
-    // dnar_sort(array, cmpString);
 
     errorCheck = dnar_search(array, "bmonskfmigb", foundIndex, cmpString);
     if (errorCheck) {
@@ -54,7 +134,7 @@ int main(int argc, char **argv) {
     } else {
         printf("\n\nELEMENT NOT FOUND BY PROVIDED CRITERIA!!!\n");
     }
-    dnar_free(array);
+    dnar_free(array); */
 
     /* FILE *file = fopen("../array_values_double.txt", "r");
     size_t arrayLength;
