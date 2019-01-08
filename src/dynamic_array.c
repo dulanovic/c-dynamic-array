@@ -2,7 +2,6 @@
 #include <assert.h>
 #include "dynamic_array.h"
 #include "quicksort_p.c"
-// #include "test_struct.c"
 
 static const size_t MIN_ARRAY_LENGTH = 2;
 
@@ -42,6 +41,7 @@ static int dnar_increase(DynArray array) {
     }
     array->array = newArray;
     array->length = newLength;
+    assert(dnar_isValid(array));
     // printf("\n\n--- SUCCESSFULL MEMORY REALLOCATION(INCREASE)!!! ---\n\n");
     return 1;
 }
@@ -63,6 +63,7 @@ DynArray dnar_new(size_t length) {
         free(array);
         return NULL;
     }
+    assert(dnar_isValid(array));
     return array;
 }
 
@@ -179,6 +180,7 @@ void dnar_sort(DynArray array, int (*compareFunc)(const void *item1, const void 
     quicksort(&array->array[0], &array->array[array->lastIndex], compareFunc);
     verifySort(&array->array[0], &array->array[array->lastIndex], compareFunc);
     // dnar_print(array);
+    assert(dnar_isValid(array));
 }
 
 int dnar_search(DynArray array, void *searchCriteria, size_t *foundIndex, int (*cmpFunc)(const void *item1, const void *item2)) {

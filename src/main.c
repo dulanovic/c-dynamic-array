@@ -35,11 +35,9 @@ static void printString(void *pvItem, void *pvFormat) {
 
 int main(int argc, char **argv) {
 
-    size_t length = 2;
+    size_t length = 2, j;
     int i, num, errorCheck;
-    size_t j;
-    void *ptr;
-    void *searchCriteria;
+    void *ptr, *searchCriteria;
     size_t *foundIndex = &length;
 
     FILE *fileD = fopen("../array_values_double.txt", "r");
@@ -91,16 +89,13 @@ int main(int argc, char **argv) {
     }
     dnar_free(array);
 
-    /* size_t length = 2;
+    /* size_t length = 2, j;
     int i, num, errorCheck;
-    size_t j;
-    void *ptr;
-    void *searchCriteria;
+    void *ptr, *searchCriteria;
     size_t *foundIndex = &length;
 
     FILE *file = fopen("../array_values_string.txt", "r");
-    size_t arrayLength;
-    size_t maxWordLength;
+    size_t arrayLength, maxWordLength;
     fscanf(file, "%i, %i\n", &arrayLength, &maxWordLength);
     DynArray array = dnar_new(arrayLength);
     if (array == NULL) {
@@ -136,7 +131,12 @@ int main(int argc, char **argv) {
     }
     dnar_free(array); */
 
-    /* FILE *file = fopen("../array_values_double.txt", "r");
+    /* size_t length = 2, j;
+    int i, num, errorCheck;
+    void *ptr, *searchCriteria;
+    size_t *foundIndex = &length;
+
+    FILE *file = fopen("../array_values_double.txt", "r");
     size_t arrayLength;
     fscanf(file, " %i", &arrayLength);
     DynArray array = dnar_new(arrayLength);
@@ -170,36 +170,33 @@ int main(int argc, char **argv) {
     }
     dnar_free(array); */
 
-    /* DynArray oDynArray;
-    size_t uLength;
-    char **ppcArray;
-    size_t u;
-    char *pcElement;
-    size_t uIndex = 0;
+    /* DynArray array;
+    size_t uLength, u, uIndex = 0;
+    char **ppcArray, *pcElement;
     int iFound;
 
     printf("<<<--------- Demonstrate dnar_new() --------->>>\n\n");
-    oDynArray = dnar_new(0);
-    if (oDynArray == NULL) exit(EXIT_FAILURE);
+    array = dnar_new(0);
+    if (array == NULL) exit(EXIT_FAILURE);
 
     printf("<<<--------- Demonstrate dnar_add() --------->>>\n\n");
-    if (!dnar_add(oDynArray, "Ruth")) exit(EXIT_FAILURE);
-    if (!dnar_add(oDynArray, "Gehrig")) exit(EXIT_FAILURE);
-    if (!dnar_add(oDynArray, "Mantle")) exit(EXIT_FAILURE);
-    if (!dnar_add(oDynArray, "Jeter")) exit(EXIT_FAILURE);
+    if (!dnar_add(array, "Ruth")) exit(EXIT_FAILURE);
+    if (!dnar_add(array, "Gehrig")) exit(EXIT_FAILURE);
+    if (!dnar_add(array, "Mantle")) exit(EXIT_FAILURE);
+    if (!dnar_add(array, "Jeter")) exit(EXIT_FAILURE);
 
     printf("<<<--------- Demonstrate dnar_getLength() --------->>>\n\n");
     printf("-----------------------------------------------------\n");
-    uLength = dnar_getLength(oDynArray);
+    uLength = dnar_getLength(array);
     printf("DynArray length:  %i\n\n\n", (int) uLength);
 
     printf("<<<--------- Demonstrate dnar_get() --------->>>\n\n");
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements\n");
     printf("-----------------------------------------------------\n");
-    uLength = dnar_getLength(oDynArray);
+    uLength = dnar_getLength(array);
     for (u = 0; u < uLength; u++) {
-        printf("%s\n", (char*) dnar_get(oDynArray, u));
+        printf("%s\n", (char *) dnar_get(array, u));
     }
     printf("\n\n");
 
@@ -207,10 +204,10 @@ int main(int argc, char **argv) {
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements\n");
     printf("-----------------------------------------------------\n");
-    dnar_set(oDynArray, 2, "Berra");
-    uLength = dnar_getLength(oDynArray);
+    dnar_set(array, 2, "Berra");
+    uLength = dnar_getLength(array);
     for (u = 0; u < uLength; u++) {
-        printf("%s\n", (char *) dnar_get(oDynArray, u));
+        printf("%s\n", (char *) dnar_get(array, u));
     }
     printf("\n\n");
 
@@ -218,12 +215,12 @@ int main(int argc, char **argv) {
     printf("-----------------------------------------------------\n");
     printf("This output should list 5 elements\n");
     printf("-----------------------------------------------------\n");
-    if (!dnar_addAt(oDynArray, 1, "Maris")) {
+    if (!dnar_addAt(array, 1, "Maris")) {
         exit(EXIT_FAILURE);
     }
-    uLength = dnar_getLength(oDynArray);
+    uLength = dnar_getLength(array);
     for (u = 0; u < uLength; u++) {
-        printf("%s\n", (char *) dnar_get(oDynArray, u));
+        printf("%s\n", (char *) dnar_get(array, u));
     }
     printf("\n\n");
 
@@ -231,10 +228,10 @@ int main(int argc, char **argv) {
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements\n");
     printf("-----------------------------------------------------\n");
-    pcElement = (char *) dnar_removeAt(oDynArray, 1);
-    uLength = dnar_getLength(oDynArray);
+    pcElement = (char *) dnar_removeAt(array, 1);
+    uLength = dnar_getLength(array);
     for (u = 0; u < uLength; u++) {
-        printf("%s\n", (char *) dnar_get(oDynArray, u));
+        printf("%s\n", (char *) dnar_get(array, u));
     }
     printf("Removed element: %s\n\n\n", pcElement);
 
@@ -242,12 +239,12 @@ int main(int argc, char **argv) {
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements\n");
     printf("-----------------------------------------------------\n");
-    uLength = dnar_getLength(oDynArray);
+    uLength = dnar_getLength(array);
     ppcArray = (char **) calloc((size_t) uLength, sizeof(char *));
     if (ppcArray == NULL) {
         exit(EXIT_FAILURE);
     }
-    dnar_toArray(oDynArray, (void **) ppcArray);
+    dnar_toArray(array, (void **) ppcArray);
     for (u = 0; u < uLength; u++) {
         printf("%s\n", ppcArray[u]);
     }
@@ -258,36 +255,36 @@ int main(int argc, char **argv) {
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements\n");
     printf("-----------------------------------------------------\n");
-    dnar_map(oDynArray, printString, "%s\n");
+    dnar_map(array, printString, "%s\n");
     printf("\n\n");
 
     printf("<<<--------- Demonstrate dnar_sort() --------->>>\n\n");
     printf("-----------------------------------------------------\n");
     printf("This output should list 4 elements in ascending order\n");
     printf("-----------------------------------------------------\n");
-    dnar_sort(oDynArray, cmpString);
-    dnar_map(oDynArray, printString, "%s\n");
+    dnar_sort(array, cmpString);
+    dnar_map(array, printString, "%s\n");
     printf("\n\n");
 
     printf("<<<--------- Demonstrate dnar_search() --------->>>\n\n");
     printf("-----------------------------------------------------\n");
     printf("This output should list 1 element\n");
     printf("-----------------------------------------------------\n");
-    iFound = dnar_search(oDynArray, "Ruth", &uIndex, cmpString);
+    iFound = dnar_search(array, "Ruth", &uIndex, cmpString);
     if (iFound) {
-        printf("%s\n\n\n", (char *) dnar_get(oDynArray, uIndex));
+        printf("%s\n\n\n", (char *) dnar_get(array, uIndex));
     }
 
     printf("<<<--------- Demonstrate dnar_bsearch() --------->>>\n\n");
     printf("-----------------------------------------------------\n");
     printf("This output should list 1 element\n");
     printf("-----------------------------------------------------\n");
-    iFound = dnar_bsearch(oDynArray, "Ruth", &uIndex, cmpString);
+    iFound = dnar_bsearch(array, "Ruth", &uIndex, cmpString);
     if (iFound) {
-        printf("%s\n", (char *) dnar_get(oDynArray, uIndex));
+        printf("%s\n", (char *) dnar_get(array, uIndex));
     }
 
-    dnar_free(oDynArray); */
+    dnar_free(array); */
 
     return(EXIT_SUCCESS);
 
